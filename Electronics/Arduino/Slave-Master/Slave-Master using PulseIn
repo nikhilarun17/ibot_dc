@@ -9,6 +9,7 @@ Board       - Arduino Uno R3
 //Using potentiometer connected to the master arduino to control the servo-motor connected to the slave arduino employing the PulseIn method
 
 //Master arduino code
+
 int Potread=0;
 int Write_Pin=11;
 void setup()
