@@ -1,0 +1,147 @@
+/*
+Developer   - Nikhil Arun
+Date        - 23-10-2025
+Board       - Arduino Uno R3
+*/
+
+/*LOGIC
+1) The Calculator consists of two variables and initially the first is active and keeps on increasing itself by multiplying by 10 and adding the new input
+2) When an operation button is pressed variables are switched and the same occurs for the second variable until the equal to sign is pressed at which point 
+the corresponding calculation is performed and output is returned
+3) At any point clicking the clear button resets everything.
+Nothing much of logic here as a whole
+4) Also the numpad works on the logic that the rows are always high and when the button is pushed, the columns which are all configured to input_pullup is
+detected (cuz of shorting and the working of input_pullup) and the button press is detected
+*/
+
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+int rowPins[4] = {9, 8, 7, 6};
+int colPins[4] = {5, 4, 3, 2};
+int int_operation = 0;
+bool switcher = true;
+int num1 = 0;
+int num2 = 0;
+float result = 0;
+char operators = 0;
+char numpad[4][4] = {
+  {'1', '2', '3', '+'},
+  {'4', '5', '6', '-'},
+  {'7', '8', '9', '*'},
+  {'C', '0', '=', '/'}
+};
+
+void setup() {
+  Serial.begin(9600);
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Press key to start");
+  for (int i = 0; i < 4; i++) {
+    pinMode(rowPins[i], OUTPUT);
+    digitalWrite(rowPins[i], HIGH);
+  }
+  for (int i = 0; i < 4; i++) {
+    pinMode(colPins[i], INPUT_PULLUP);
+  }
+}
+
+bool while_condition(char k) {
+  return (k == 'C' || k == '/' || k == '*' || k == '=' || k == '-' || k == '+');
+}
+
+void loop() {
+  char key = readvalue();
+  if (key != 0) {
+    Serial.print("You pressed: ");
+    Serial.println(key);
+    delay(300);
+    if (while_condition(key)) {
+      switcher = false;
+    } else {
+      switcher = true;
+    }
+    if (int_operation == 0 && switcher) {
+      num1 = num1 * 10 + (key - '0');
+      displayStatus(num1, num2, operators);
+    } else if (int_operation == 1 && switcher) {
+      num2 = num2 * 10 + (key - '0');
+      displayStatus(num1, num2, operators);
+    }
+    if (key == 'C') {
+      num1 = 0;
+      num2 = 0;
+      result = 0;
+      int_operation = 0;
+      operators = 0;
+      lcd.clear();
+      lcd.print("Cleared");
+      delay(500);
+      lcd.clear();
+    }
+    if (key == '+' || key == '-' || key == '*' || key == '/') {
+      operators = key;
+      int_operation = 1;
+      displayStatus(num1, num2, operators);
+    }
+    if (key == '=' && int_operation == 1) {
+      switch (operators) {
+        case '+': result = num1 + num2; break;
+        case '-': result = num1 - num2; break;
+        case '*': result = num1 * num2; break;
+        case '/': 
+          if (num2 != 0) result = (float)num1 / num2; 
+          else {
+            lcd.clear();
+            lcd.print("Error: Div by 0");
+            Serial.println("Error: Divide by 0");
+            delay(1000);
+            lcd.clear();
+          }
+          break;
+      }
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Result:");
+      lcd.setCursor(0, 1);
+      lcd.print(result);
+      Serial.print("Result: ");
+      Serial.println(result);
+      num1 = 0;
+      num2 = 0;
+      int_operation = 0;
+      operators = 0;
+      result = 0;
+      delay(1500);
+      lcd.clear();
+    }
+  }
+}
+
+void displayStatus(int a, int b, char operatorss) {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(a);
+  if (operatorss != 0) {
+    lcd.print(operatorss);
+    if (b != 0) lcd.print(b);
+  }
+}
+
+char readvalue() {
+  for (int r = 0; r < 4; r++) {
+    digitalWrite(rowPins[r], LOW);
+    for (int c = 0; c < 4; c++) {
+      if (digitalRead(colPins[c]) == LOW) {
+        delay(50);
+        digitalWrite(rowPins[r], HIGH);
+        return numpad[r][c];
+      }
+    }
+    digitalWrite(rowPins[r], HIGH);
+  }
+  return 0;
+}
