@@ -1,0 +1,30 @@
+/*
+Developer   - Nikhil Arun
+Date        - 3-12-2025
+Board       - Arduino Uno R3
+*/
+
+//TinkerCad Link: https://www.tinkercad.com/things/hlyyjOjXXYA-breathing-led-2-ee25b091/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard&sharecode=HpcnOnh_7_feWq5mYFbaCOORIs-iWJtm7WFbei86WkY
+
+//LED brightness increases and diminishes in 1s
+
+int LED_PIN=6;
+
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop()
+{
+  for (int i=0;i<256;i++)
+  {
+  	analogWrite(LED_PIN, i);
+    delay(500/256);
+  }
+  for (int j=0;j<256;j++)
+  {
+  	analogWrite(LED_PIN, 255-j);
+    delay(500/256);
+  }
+}
