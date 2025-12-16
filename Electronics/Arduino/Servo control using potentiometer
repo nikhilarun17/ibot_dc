@@ -1,0 +1,30 @@
+/*
+Developer   - Nikhil Arun
+Date        - 3-12-2025
+Board       - Arduino Uno R3
+*/
+
+//TinkerCad Link: https://www.tinkercad.com/things/apKBjoUBD4F-servo-control-ee25b091/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=pWQuT0fVSaTtz7uQ9XAnkO7Vc3gqHiE6Kbd-1eAsPfc
+
+// Servo-motor control using potentiometer
+
+#include <Servo.h>
+
+Servo Potserve;
+
+int Potread=0;
+int ServoAttach_pin=11;
+
+void setup()
+{
+  Potserve.attach(ServoAttach_pin);
+}
+
+void loop()
+{
+  Potread=analogRead(A3);
+  int Potangle = map(Potread, 0, 1023, 0, 180);
+  Potserve.write(Potangle);
+  delay(20);
+
+}  
