@@ -4,6 +4,8 @@ Date        - 23-10-2025
 Board       - Arduino Uno R3
 */
 
+//TinkerCad Link: https://www.tinkercad.com/things/2glRE0BsvyR-calculator/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=sTI4PlgsS6SUk_Qg3Db2r837pfzVYuJTw_VhW57Q2QQ
+
 /*LOGIC
 1) The Calculator consists of two variables and initially the first is active and keeps on increasing itself by multiplying by 10 and adding the new input
 2) When an operation button is pressed variables are switched and the same occurs for the second variable until the equal to sign is pressed at which point 
