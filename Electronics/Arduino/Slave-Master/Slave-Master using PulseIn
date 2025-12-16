@@ -1,0 +1,57 @@
+/*
+Developer   - Nikhil Arun
+Date        - 3-12-2025
+Board       - Arduino Uno R3
+*/
+
+//TinkerCad Link: https://www.tinkercad.com/things/4MSQIL29DLt-slave-master-shttps://www.tinkercad.com/things/4MSQIL29DLt-slave-master-servo-using-pulsein/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=ttlcQvEqweJm5uH5eZwf4Tzf7n5AkoCZqglKrC3Afd0ervo-using-pulsein/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=ttlcQvEqweJm5uH5eZwf4Tzf7n5AkoCZqglKrC3Afd0
+
+//Using potentiometer connected to the master arduino to control the servo-motor connected to the slave arduino
+
+//Master arduino code
+int Potread=0;
+int Write_Pin=11;
+void setup()
+{
+  pinMode(Write_Pin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  Potread=analogRead(A0);
+  int duty = map(Potread, 0, 1023, 0, 255);
+  analogWrite(Write_Pin,duty);
+  Serial.println(duty);
+  delay(20);
+}
+
+//Slave arduino code
+
+#include <Servo.h>
+
+Servo Potserve;
+
+int angle=0;
+int Servo_pin=11;
+int SlaveInput_pin=9;
+
+void setup()
+{
+  Potserve.attach(Servo_pin);
+  Serial.begin(9600);
+  pinMode(SlaveInput_pin,INPUT);
+}
+
+void loop()
+{
+  unsigned long pulse = pulseIn(SlaveInput_pin, HIGH);
+  if (pulse > 1000 && pulse < 2000) {
+
+  angle = map(pulse, 1000, 2000, 0, 180);
+  Potserve.write(angle);
+  Serial.println(angle);
+
+  }
+  delay(20);
+}
