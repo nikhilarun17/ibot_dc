@@ -1,0 +1,58 @@
+/*
+Developer   - Nikhil Arun
+Date        - 16-12-2025
+Board       - NodeMCU ESP-32S - V1.1
+*/
+
+//Wokwi Link:https://wokwi.com/projects/449862203901261825
+
+//diagram.json
+
+{
+  "version": 1,
+  "author": "KK",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp1", "top": -91.3, "left": 4.6, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": -87.7, "left": 153.4, "attrs": {} },
+    { "type": "wokwi-led", "id": "led1", "top": -186, "left": -82.6, "attrs": { "color": "red" } },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -91.2,
+      "left": -86.95,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    }
+  ],
+  "connections": [
+    [ "r3:1", "led4:A", "green", [ "v0" ] ],
+    [ "esp1:D34", "pot1:SIG", "yellow", [ "h182.4", "v-0.2" ] ],
+    [ "esp1:GND.1", "pot1:GND", "black", [ "h76.5", "v-0.1" ] ],
+    [ "pot1:VCC", "esp1:3V3", "red", [ "v0" ] ],
+    [ "led1:A", "r1:1", "red", [ "v0" ] ],
+    [ "r1:2", "esp1:D2", "red", [ "h0", "v94.8" ] ],
+    [ "esp1:GND.2", "led1:C", "black", [ "h-76.8", "v-0.1" ] ]
+  ],
+  "dependencies": {}
+}
+
+//main.cpp
+
+int pott=34;
+int ledpin=2;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(pott, INPUT);
+  ledcSetup(0,5000,8);
+  ledcAttachPin(ledpin,0);
+}
+
+void loop() {
+int value = analogRead(pott); 
+Serial.println(value);
+int brightness = map(value, 0, 4095, 0, 255);
+ledcWrite(0, brightness);
+delay(50);
+}
