@@ -1,0 +1,100 @@
+/*
+Developer   - Nikhil Arun
+Date        - 016-12-2025
+Board       - NodeMCU ESP-32S - V1.1
+*/
+
+//diagram.json
+
+{
+  "version": 1,
+  "author": "KK",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": -196.9, "left": 119.8, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -182.1, "left": 301.8, "attrs": {} },
+    {
+      "type": "board-ssd1306",
+      "id": "oled2",
+      "top": -92.86,
+      "left": -38.17,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -44.05,
+      "left": 240,
+      "attrs": { "value": "220" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "r3:1", "led4:A", "green", [ "v0" ] ],
+    [ "led4:C", "esp:GND.1", "green", [ "v138.64", "h-88.39", "v102.35", "h600.84", "v-182.05" ] ],
+    [ "r3:2", "esp:D2", "green", [ "v99.14", "h278.51", "v-37.5" ] ],
+    [ "oled2:GND", "esp:GND.2", "black", [ "v-19.2", "h96", "v57.6", "h19.2" ] ],
+    [ "oled2:VCC", "esp:3V3", "red", [ "v-9.6", "h76.95", "v57.6" ] ],
+    [ "oled2:SCL", "esp:D22", "green", [ "v-57.6", "h0.3", "v-9.6" ] ],
+    [ "esp:D21", "oled2:SDA", "green", [ "h0" ] ],
+    [ "esp:3V3", "r1:1", "green", [ "v0" ] ],
+    [ "r1:2", "dht1:VCC", "green", [ "v0", "h18" ] ],
+    [ "dht1:GND", "esp:GND.1", "black", [ "v19.2" ] ],
+    [ "dht1:SDA", "esp:D4", "green", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
+
+//main.cpp
+
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <DHT.h>
+
+const int DHT22_Pin = 4;
+
+float Humidity, Temperature;
+
+DHT My_DHT22(DHT22_Pin, DHT22);
+const int Time_Delay = 2000;
+Adafruit_SSD1306 Display(128, 64, &Wire, -1);
+
+void setup() 
+{
+  Serial.begin(9600);
+
+  if(!Display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
+  { 
+    Serial.println("SSD1306 Allocation Failed");
+  } 
+
+  Display.setTextSize(1);
+  Display.setTextColor(SSD1306_WHITE);
+  Display.clearDisplay();
+  Display.setCursor(0, 0);
+  Display.println(F("Humidity and Temperature Sensor"));
+  Display.display();
+}
+
+void loop() 
+{
+  Humidity = My_DHT22.readHumidity();
+  Temperature = My_DHT22.readTemperature();
+
+  Display.clearDisplay();
+  Display.setCursor(0, 0);
+  Display.print(F("Humidity: "));
+  Display.print(Humidity);
+  Display.println(F(" %"));
+
+  Display.print(F("Temperature: "));
+  Display.print(Temperature);
+  Display.println(F(" C"));
+
+  Display.display();
+
+  delay(Time_Delay);
+}
