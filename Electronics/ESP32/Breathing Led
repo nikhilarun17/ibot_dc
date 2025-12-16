@@ -1,0 +1,60 @@
+/*
+Developer   - Nikhil Arun
+Date        - 8-12-2025
+Board       - NodeMCU ESP-32S - V1.1
+*/
+
+//Wokwi Link: https://wokwi.com/projects/449861097042041857
+
+//diagram.json
+
+{
+  "version": 1,
+  "author": "KK",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp1", "top": -100.9, "left": 139, "attrs": {} },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -13.2,
+      "left": 301.4,
+      "attrs": { "color": "red", "flip": "" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 42.35,
+      "left": 326.4,
+      "attrs": { "value": "220" }
+    }
+  ],
+  "connections": [
+    [ "r3:1", "led4:A", "green", [ "v0" ] ],
+    [ "esp1:GND.1", "led1:C", "black", [ "h76.5", "v-0.1" ] ],
+    [ "r1:1", "led1:A", "green", [ "v0" ] ],
+    [ "r1:2", "esp1:D2", "green", [ "v-67.2", "h-126", "v48" ] ]
+  ],
+  "dependencies": {}
+}
+
+//main.cpp
+
+void setup(){
+  
+  ledcSetup(0,5000,8);
+  ledcAttachPin(2,0);
+}
+void loop()
+{
+  for (int i=0;i<256;i++)
+  {
+  	ledcWrite(0, i);
+    delay(2);
+  }
+  for (int j=0;j<256;j++)
+  {
+  	ledcWrite(0, 255-j);
+    delay(2);
+  }
+}
