@@ -1,0 +1,85 @@
+/*
+Developer   - Nikhil Arun
+Date        - 16-12-2025
+Board       - Arduino Uno R3
+*/
+
+// TinkerCad Link: https://www.tinkercad.com/things/8GJPFUrq44f-l293d-motor-control/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard&sharecode=IVAhIImArpwT8vrKPko4i9N-kHQACL_auptB0q2vNZY
+
+// Controls the rotation of two motors using the L293 Hbridge IC 
+
+int enA = 3;
+int in1 = 8;
+int in2 = 9;
+
+int enB = 5;
+int in3 = 10;
+int in4 = 11;
+
+void setup() {
+  pinMode(enA, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+
+  pinMode(enB, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+}
+
+void loop() {
+  // Both motors forward
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  analogWrite(enA, 200);
+  analogWrite(enB, 200);
+  delay(2000);
+  
+  //Stop
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
+  delay(1000); 
+  
+  // Both motors reverse
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  analogWrite(enA, 200);
+  analogWrite(enB, 200);
+  delay(2000);
+  
+  //Stop
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
+  delay(1000); 
+
+  // A forward B reverse
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  analogWrite(enA, 200);
+  analogWrite(enB, 200);
+  delay(2000);
+  
+  //Stop
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
+  delay(1000); 
+  
+  // B forward A reverse
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  analogWrite(enA, 200);
+  analogWrite(enB, 200);
+  delay(2000);
+  
+  //Stop
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
+  delay(1000); 
+}

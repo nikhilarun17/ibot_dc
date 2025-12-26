@@ -1,0 +1,25 @@
+/*
+Developer   - Nikhil Arun
+Date        - 3-12-2025
+Board       - Arduino Uno R3
+*/
+
+// TinkerCad Link: https://www.tinkercad.com/things/l9Wkeh2TAQ5-breathing-led-1-ee25b091/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=ogasr916V54qbxLCsJlClpWdTGNequxSToOmxNWO680
+
+// RollNo last 3 digits:091
+//frequency is soo high that flickering can't be percieved by the human brain
+
+int LED_PIN=5;
+
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(LED_PIN, HIGH);
+  delay(500/91); 
+  digitalWrite(LED_PIN, LOW);
+  delay(500/91); 
+}

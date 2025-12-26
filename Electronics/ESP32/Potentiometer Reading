@@ -1,0 +1,49 @@
+/*
+Developer   - Nikhil Arun
+Date        - 9-12-2025
+Board       - NodeMCU ESP-32S - V1.1
+*/
+
+//Wokwi Link:https://wokwi.com/projects/449861708295925761
+
+//Reading the Potentiometer value and printing using serial monitor
+
+//diagram.json
+
+{
+  "version": 1,
+  "author": "KK",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": -91.3, "left": 4.6, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": -87.7, "left": 153.4, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "r3:1", "led4:A", "green", [ "v0" ] ],
+    [ "led4:C", "esp:GND.1", "green", [ "v138.64", "h-88.39", "v102.35", "h600.84", "v-182.05" ] ],
+    [ "r3:2", "esp:D2", "green", [ "v99.14", "h278.51", "v-37.5" ] ],
+    [ "esp:D34", "pot1:SIG", "green", [ "h182.4", "v-0.2" ] ],
+    [ "esp:GND.1", "pot1:GND", "black", [ "h76.5", "v-0.1" ] ],
+    [ "pot1:VCC", "esp:3V3", "red", [ "v0" ] ]
+  ],
+  "dependencies": {}
+} 
+
+//main.cpp
+
+int pott=34;
+
+void setup() {
+
+  Serial.begin(115200);
+  pinMode(pott, INPUT);
+
+}
+
+void loop() {
+int value = analogRead(pott); 
+Serial.println(value);
+delay(200);
+}

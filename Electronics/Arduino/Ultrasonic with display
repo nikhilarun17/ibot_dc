@@ -1,0 +1,71 @@
+/*
+Developer   - Nikhil Arun
+Date        - 3-12-2025
+Board       - Arduino Uno R3
+*/
+
+//TinkerCad Link: https://www.tinkercad.com/things/d82VX0b1MXN-ultrasonic/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=VuG0OXt6wOMirh0i2F7bsQewAwUenykPBmCTSYGejAI
+
+
+//Uses Ultrasonic to measure distance and display on I2C LCD screen
+
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+int trigpin = 9;
+int echopin = 8;
+
+float Distance, Duration;
+
+void setup()
+{
+  pinMode(trigpin, OUTPUT);
+  pinMode(echopin, INPUT);
+  Serial.begin(9600);
+  lcd.init();
+  lcd.backlight();
+  lcd.begin(16,2);
+  lcd.setCursor(0, 0);
+
+}
+
+void loop()
+{
+  digitalWrite(trigpin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigpin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigpin, LOW);
+
+  Duration = pulseIn(echopin, HIGH, 30000);
+  Distance = (Duration*0.0343)/2;
+
+  if(Duration == 0)
+  {
+    Serial.println("No Object Detected");
+    lcd.setCursor(0, 0);
+    lcd.print("No Object Detected");
+  }
+  else
+  {
+    Serial.print("Distance : ");
+    Serial.print(Distance);
+    Serial.print(" cm");
+    Serial.print(" (Duration : ");
+    Serial.print(Duration);
+    Serial.println(" µs)");
+    lcd.setCursor(0, 0);
+    lcd.print("Distance: ");
+    lcd.print(Distance);
+    lcd.print(" cm");
+
+    lcd.setCursor(0, 1);
+    lcd.print("Duration:");
+    lcd.print(Duration);
+    lcd.print(" us");
+
+  }
+  delay(500);
+  lcd.clear();
+}
