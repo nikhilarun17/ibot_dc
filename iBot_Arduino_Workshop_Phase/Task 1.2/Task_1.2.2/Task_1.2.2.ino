@@ -1,3 +1,11 @@
+/*
+Developer   - Nikhil Arun
+Date        - 6-2-2026
+Board       - Arduino Uno R3
+*/
+
+// Sets up a LCD display to display a ripple effect and hello world.
+
 #include <LiquidCrystal.h>
 
 LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
