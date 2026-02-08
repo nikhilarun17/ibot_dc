@@ -4,7 +4,7 @@ Date        - 6-2-2026
 Board       - Arduino Uno R3
 */
 
-// Sets up a LCD display to display a ripple effect and hello world.
+//Sets up a LCD to display name and hello world.
 
 #include <LiquidCrystal.h>
 
