@@ -1,3 +1,11 @@
+/*
+Developer   - Nikhil Arun
+Date        - 7-2-2026
+Board       - Arduino Uno R3
+*/
+
+// And OLED Snake-type game with a single pixel.
+
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
