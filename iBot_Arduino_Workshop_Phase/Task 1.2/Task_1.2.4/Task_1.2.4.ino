@@ -1,3 +1,11 @@
+/*
+Developer   - Nikhil Arun
+Date        - 7-2-2026
+Board       - Arduino Uno R3
+*/
+
+// Moves a servo motor to and fro
+
 #include <Servo.h>
 
 int potpin = 11;
