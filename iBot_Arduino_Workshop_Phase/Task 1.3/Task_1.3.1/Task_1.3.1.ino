@@ -1,3 +1,11 @@
+/*
+Developer   - Nikhil Arun
+Date        - 7-2-2026
+Board       - Arduino Uno R3
+*/
+
+// Uses a lazer and when interrupted starts a buzzer and displays it on the lcd screen
+
 #include <LiquidCrystal.h>
 int ldr = 0;
 LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
